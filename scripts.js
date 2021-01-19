@@ -1,40 +1,45 @@
 const app = document.getElementById('root')
 
-const logo = document.createElement('img')
+const logo = document.createElement('img') //<img src="logo.png">
 logo.src = 'logo.png'
 
-const container = document.createElement('div')
+const container = document.createElement('div') //<div className="container">
 container.setAttribute('class', 'container')
 
-app.appendChild(logo)
-app.appendChild(container)
+app.appendChild(logo) //append logo after the #root 
+app.appendChild(container) //append div.container after logo
 
-var request = new XMLHttpRequest()
-request.open('GET', 'https://ghibliapi.herokuapp.com/films', true)
-request.onload = function () {
-  // Begin accessing JSON data here
-  var data = JSON.parse(this.response)
-  if (request.status >= 200 && request.status < 400) {
+
+fetch('https://ghibliapi.herokuapp.com/films', {
+  method:'GET',
+})
+  .then((response) => {
+   return response.json()
+  })
+  .then((data) => {
     data.forEach((movie) => {
-      const card = document.createElement('div')
-      card.setAttribute('class', 'card')
+       // Create a div with a card class
+      const card = document.createElement('div')  //<div className="card"></div>
+      card.setAttribute('class', 'card') 
 
-      const h1 = document.createElement('h1')
+      // Create an h1 and set the text content to the film's title
+      const h1 = document.createElement('h1') //<h1>Movie Title</h1>
       h1.textContent = movie.title
 
-      const p = document.createElement('p')
-      movie.description = movie.description.substring(0, 300)
-      p.textContent = `${movie.description}...`
+      // Create a p and set the text content to the film's description
+      const p = document.createElement('p') //<p> Movie description</p>
+      movie.description = movie.description.substring(0, 300) // Limit to 300 characters
+      p.textContent = `${movie.description}...` // End with ellipses 
 
+      //Append the cards to the container element
       container.appendChild(card)
+      // Each card will contain an h1 and a p
       card.appendChild(h1)
       card.appendChild(p)
-    })
-  } else {
-    const errorMessage = document.createElement('marquee')
-    errorMessage.textContent = `Gah, it's not working!`
-    app.appendChild(errorMessage)
-  }
-}
+  })
+  .catch((err) => {
+    console.error('Error:', error);
+  })
+})
 
 request.send()
