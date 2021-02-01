@@ -13,9 +13,7 @@ app.appendChild(container) //append div.container after logo
 fetch('https://ghibliapi.herokuapp.com/films', {
   method:'GET',
 })
-  .then((response) => {
-   return response.json()
-  })
+  .then(response => response.json())
   .then((data) => {
     data.forEach((movie) => {
        // Create a div with a card class
@@ -37,9 +35,10 @@ fetch('https://ghibliapi.herokuapp.com/films', {
       card.appendChild(h1)
       card.appendChild(p)
   })
-  .catch((err) => {
-    console.error('Error:', error);
+  .catch((error) => {
+    console.error(error)
   })
 })
 
-request.send()
+
+
